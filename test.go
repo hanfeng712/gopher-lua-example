@@ -1,11 +1,23 @@
 package main
 import (
 	"fmt"
+	"os"
 	"./luatool"
 	"github.com/yuin/gopher-lua"
 )
 func main(){
 	fmt.Println("start!")
+	pwd, err := os.Getwd()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	luaPath := "/lua_script/test.lua"
+	luaPath1 := "/lua_script/test1.lua"
+	luafile := fmt.Sprintf("%s%s", pwd,luaPath)
+	luafile1 := fmt.Sprintf("%s%s", pwd,luaPath1)
+	/*******************************************************/
+
 	L := lua.NewState()
 	defer L.Close()
 	if err := L.DoString(`print("hello")`); err != nil {
@@ -18,15 +30,14 @@ func main(){
 	L.PreloadModule("test", luatool.NewTestModule().Loader)
 	//加载go提供元表给lua
 	luatool.RegisterPersonType(L)
-	if err := L.DoFile("test.lua"); err != nil {
+	if err := L.DoFile(luafile); err != nil {
 		panic(err)
 	}
-
 
 	//go调用lua的方法
 	fmt.Print("\n\n==============================\n")
 	fmt.Print("====1:go调用lua的全局方法====\n")
-	if err := L.DoFile("test1.lua"); err != nil {
+	if err := L.DoFile(luafile1); err != nil {
 		panic(err)
 	}
 	if err := L.CallByParam(lua.P{
