@@ -1,3 +1,6 @@
+/*
+学习:go提供对象和对象发个方法给lua使用
+*/
 package luatool
 
 import (

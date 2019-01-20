@@ -1,3 +1,6 @@
+/*
+学习:go提供lua的元表功能给lua使用
+*/
 package luatool
 
 import (

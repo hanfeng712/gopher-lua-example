@@ -1,3 +1,6 @@
+/*
+学习:go提供全局方法给lua使用
+*/
 package luatool
 
 import (
