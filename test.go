@@ -21,6 +21,8 @@ func main(){
 	if err := L.DoFile("test.lua"); err != nil {
 		panic(err)
 	}
+
+
 	//go调用lua的方法
 	fmt.Print("\n\n==============================\n")
 	fmt.Print("====1:go调用lua的全局方法====\n")
@@ -38,4 +40,23 @@ func main(){
 	L.Pop(1)
 	fmt.Printf("ret1 : %d\n", ret1)
 	return
+}
+
+//go提供协程给lua使用
+func test(L *lua.LState){
+	co, _ := L.NewThread() /* create a new thread */
+	fn := L.GetGlobal("thread").(*lua.LFunction) /* get function from lua */
+	for {
+		st, err, values := L.Resume(co, fn)
+		if st == lua.ResumeError {
+			fmt.Println("yield break(error)")
+			fmt.Println(err.Error())
+			break
+		}
+		fmt.Print(values)
+		if st == lua.ResumeOK {
+			fmt.Println("\nyield break(ok)")
+			break
+		}
+	}
 }
