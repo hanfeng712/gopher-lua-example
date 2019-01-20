@@ -17,3 +17,4 @@ func Double(L *lua.LState) int {
 	L.Push(lua.LNumber(lv * 2)) /* push result */
 	return 1                     /* number of results */
 }
+
