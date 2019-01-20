@@ -3,18 +3,36 @@ package luatool
 import (
 	"github.com/yuin/gopher-lua"
 )
-
-func Add(L *lua.LState) int {
-	lv1 := 1
-	lv2 := 2
-	ret := lv1 + lv2
-	L.Push(lua.LNumber(ret))
+type testModule struct {
+	exports map[string]lua.LGFunction
+}
+//创建模块
+func NewTestModule() *testModule {
+	ret := &testModule{
+		exports : make(map[string]lua.LGFunction),
+	}
+	ret.init()
+	return ret
+}
+//模块函数注册
+func (h *testModule) init() int{
+	h.exports["getName"] = h.getName
+	h.exports["test"] = h.test
+	return 1
+}
+//模块注册
+func (h *testModule) Loader(L *lua.LState) int {
+	mod := L.SetFuncs(L.NewTable(), h.exports)
+	L.Push(mod)
 	return 1
 }
 
-func Double(L *lua.LState) int {
-	lv := L.ToInt(1)             /* get argument */
-	L.Push(lua.LNumber(lv * 2)) /* push result */
-	return 1                     /* number of results */
+//测试函数
+func (h *testModule) getName(L *lua.LState) int {
+	ret := lua.LString("hello word")
+	L.Push(ret)
+	return 1
 }
-
+func (h *testModule) test(L *lua.LState) int {
+	return 1
+}
