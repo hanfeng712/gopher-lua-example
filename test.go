@@ -5,6 +5,13 @@ import (
 	"./luatool"
 	"github.com/yuin/gopher-lua"
 )
+func initLuaScript() []string{
+	luaPath := []string{
+		"/lua_script/test.lua",
+		"/lua_script/test1.lua",
+	}
+	return luaPath
+}
 func main(){
 	fmt.Println("start!")
 	pwd, err := os.Getwd()
@@ -16,6 +23,9 @@ func main(){
 	luaPath1 := "/lua_script/test1.lua"
 	luafile := fmt.Sprintf("%s%s", pwd,luaPath)
 	luafile1 := fmt.Sprintf("%s%s", pwd,luaPath1)
+	/*luaPath := initLuaScript()
+	TODO:		
+	*/
 	/*******************************************************/
 
 	L := lua.NewState()
