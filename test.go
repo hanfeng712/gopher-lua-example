@@ -7,11 +7,13 @@ import (
 )
 func initLuaScript() []string{
 	luaPath := []string{
-		"/lua_script/test.lua",
 		"/lua_script/test1.lua",
+		"/lua_script/test2.lua",
+		"/lua_script/test.lua",
 	}
 	return luaPath
 }
+
 func main(){
 	fmt.Println("start!")
 	pwd, err := os.Getwd()
@@ -19,24 +21,13 @@ func main(){
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	luaPath := "/lua_script/test.lua"
-	luaPath1 := "/lua_script/test1.lua"
-	luaPath2 := "/lua_script/test2.lua"
-	luafile := fmt.Sprintf("%s%s", pwd,luaPath)
-	luafile1 := fmt.Sprintf("%s%s", pwd,luaPath1)
-	luafile2 := fmt.Sprintf("%s%s", pwd,luaPath2)
-	/*luaPath := initLuaScript()
-	TODO:
-	*/
+	luaPathMap := initLuaScript()
 	/*******************************************************/
 
 	L := lua.NewState()
 	defer L.Close()
 	if err := L.DoString(`print("hello")`); err != nil {
 		    panic(err)
-	}
-	if err := L.DoFile(luafile2); err != nil {
-		panic(err)
 	}
 	//提供全局函数给lua
 	L.SetGlobal("add", L.NewFunction(luatool.Add))
@@ -45,16 +36,18 @@ func main(){
 	L.PreloadModule("test", luatool.NewTestModule().Loader)
 	//加载go提供元表给lua
 	luatool.RegisterPersonType(L)
-	if err := L.DoFile(luafile); err != nil {
-		panic(err)
+
+	//加载lua脚本
+	for _, luaPath := range luaPathMap {
+		luafile := fmt.Sprintf("%s%s", pwd,luaPath)
+		if err := L.DoFile(luafile); err != nil {
+			panic(err)
+		}
 	}
 
 	//go调用lua的方法
 	fmt.Print("\n\n==============================\n")
 	fmt.Print("====1:go调用lua的全局方法====\n")
-	if err := L.DoFile(luafile1); err != nil {
-		panic(err)
-	}
 	if err := L.CallByParam(lua.P{
 		Fn: L.GetGlobal("double"),
 		NRet: 1,
