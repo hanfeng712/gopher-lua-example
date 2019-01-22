@@ -22,3 +22,7 @@ print("=====3:go实现lua的元表功能=====")
 local p = person.new("hanfeng")
 ret = p:name()
 print("ret : " .. tostring(ret))
+
+print("==================lua-lua=enter=========================")
+RandomAward.Test()
+print("==================lua-lua=end=========================")

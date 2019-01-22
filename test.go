@@ -21,10 +21,12 @@ func main(){
 	}
 	luaPath := "/lua_script/test.lua"
 	luaPath1 := "/lua_script/test1.lua"
+	luaPath2 := "/lua_script/test2.lua"
 	luafile := fmt.Sprintf("%s%s", pwd,luaPath)
 	luafile1 := fmt.Sprintf("%s%s", pwd,luaPath1)
+	luafile2 := fmt.Sprintf("%s%s", pwd,luaPath2)
 	/*luaPath := initLuaScript()
-	TODO:		
+	TODO:
 	*/
 	/*******************************************************/
 
@@ -32,6 +34,9 @@ func main(){
 	defer L.Close()
 	if err := L.DoString(`print("hello")`); err != nil {
 		    panic(err)
+	}
+	if err := L.DoFile(luafile2); err != nil {
+		panic(err)
 	}
 	//提供全局函数给lua
 	L.SetGlobal("add", L.NewFunction(luatool.Add))
