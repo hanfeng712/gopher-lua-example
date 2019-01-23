@@ -7,9 +7,9 @@ import (
 )
 func initLuaScript() []string{
 	luaPath := []string{
-		"/script/test1.lua",
-		"/script/test.lua",
-		"/script/testinit.lua",
+		"/script/test/test1.lua",
+		"/script/test/test.lua",
+		"/script/test/testinit.lua",
 	}
 	return luaPath
 }
