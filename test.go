@@ -10,7 +10,7 @@ func initLuaScript() []string{
 		"/lua_script/test1.lua",
 		"/lua_script/test.lua",
 		"/lua_script/RandomReturnAward.lua",
-		"/lua_script/init.lua",
+		"/lua_script/testinit.lua",
 	}
 	return luaPath
 }

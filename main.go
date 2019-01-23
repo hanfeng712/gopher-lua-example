@@ -7,12 +7,19 @@ import (
 )
 func initLuaScript() []string{
 	luaPath := []string{
-		"/lua_script/test1.lua",
-		"/lua_script/test.lua",
-		"/lua_script/RandomReturnAward.lua",
-		"/lua_script/init.lua",
+		"/lua_script/gxlua/unitimer.lua",
+		"/lua_script/gxlua/RandomReturnAward.lua",
+		"/lua_script/gxlua/init.lua",
 	}
 	return luaPath
+}
+
+func initGoLuaModule(L *lua.LState) int{
+	//加载go提供对象给lua
+	L.PreloadModule("gotime", luatool.NewTimeModule().Loader)
+	//加载go提供元表给lua
+	luatool.RegisterPersonType(L)
+	return 0
 }
 
 func main(){
@@ -23,21 +30,12 @@ func main(){
 		os.Exit(1)
 	}
 	luaPathMap := initLuaScript()
-	/*******************************************************/
 
 	L := lua.NewState()
 	defer L.Close()
-	if err := L.DoString(`print("hello")`); err != nil {
-		    panic(err)
-	}
-	//提供全局函数给lua
-	L.SetGlobal("add", L.NewFunction(luatool.Add))
-	L.SetGlobal("double", L.NewFunction(luatool.Double))
-	//加载go提供对象给lua
-	L.PreloadModule("test", luatool.NewTestModule().Loader)
-	//加载go提供元表给lua
-	luatool.RegisterPersonType(L)
 
+	//加载go提供对象给lua
+	initGoLuaModule(L)
 	//加载lua脚本
 	for _, luaPath := range luaPathMap {
 		luafile := fmt.Sprintf("%s%s", pwd,luaPath)
@@ -45,38 +43,5 @@ func main(){
 			panic(err)
 		}
 	}
-
-	//go调用lua的方法
-	fmt.Print("\n\n==============================\n")
-	fmt.Print("====1:go调用lua的全局方法====\n")
-	if err := L.CallByParam(lua.P{
-		Fn: L.GetGlobal("double"),
-		NRet: 1,
-		Protect: true,
-	}, lua.LNumber(10)); err != nil {
-		panic(err)
-	}
-	ret1 := L.Get(-1)
-	L.Pop(1)
-	fmt.Printf("ret1 : %d\n", ret1)
 	return
-}
-
-//go提供协程给lua使用
-func test(L *lua.LState){
-	co, _ := L.NewThread() /* create a new thread */
-	fn := L.GetGlobal("thread").(*lua.LFunction) /* get function from lua */
-	for {
-		st, err, values := L.Resume(co, fn)
-		if st == lua.ResumeError {
-			fmt.Println("yield break(error)")
-			fmt.Println(err.Error())
-			break
-		}
-		fmt.Print(values)
-		if st == lua.ResumeOK {
-			fmt.Println("\nyield break(ok)")
-			break
-		}
-	}
 }
