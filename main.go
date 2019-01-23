@@ -2,7 +2,7 @@ package main
 import (
 	"fmt"
 	"os"
-	"./luatool"
+	"./golua"
 	"github.com/yuin/gopher-lua"
 )
 func initLuaScript() []string{
@@ -28,9 +28,9 @@ func dofile(L *lua.LState) int{
 
 func initGoLuaModule(L *lua.LState) int{
 	//加载go提供对象给lua
-	L.PreloadModule("gotime", luatool.NewTimeModule().Loader)
+	L.PreloadModule("gotime", golua.NewTimeModule().Loader)
 	//加载go提供元表给lua
-	luatool.RegisterPersonType(L)
+	golua.RegisterPersonType(L)
 	/********add global function*********/
 	//提供全局函数给lua
 	L.SetGlobal("dofiles", L.NewFunction(dofile))

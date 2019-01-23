@@ -2,15 +2,14 @@ package main
 import (
 	"fmt"
 	"os"
-	"./luatool"
+	"./golua"
 	"github.com/yuin/gopher-lua"
 )
 func initLuaScript() []string{
 	luaPath := []string{
-		"/lua_script/test1.lua",
-		"/lua_script/test.lua",
-		"/lua_script/RandomReturnAward.lua",
-		"/lua_script/testinit.lua",
+		"/script/test1.lua",
+		"/script/test.lua",
+		"/script/testinit.lua",
 	}
 	return luaPath
 }
@@ -31,12 +30,12 @@ func main(){
 		    panic(err)
 	}
 	//提供全局函数给lua
-	L.SetGlobal("add", L.NewFunction(luatool.Add))
-	L.SetGlobal("double", L.NewFunction(luatool.Double))
+	L.SetGlobal("add", L.NewFunction(golua.Add))
+	L.SetGlobal("double", L.NewFunction(golua.Double))
 	//加载go提供对象给lua
-	L.PreloadModule("test", luatool.NewTestModule().Loader)
+	L.PreloadModule("test", golua.NewTestModule().Loader)
 	//加载go提供元表给lua
-	luatool.RegisterPersonType(L)
+	golua.RegisterPersonType(L)
 
 	//加载lua脚本
 	for _, luaPath := range luaPathMap {
