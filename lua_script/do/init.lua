@@ -1,5 +1,5 @@
 local lastdofiles = {
-	"lua_script/gxlua/unitimer.lua",
+	"lua_script/do/RandomReturnAward.lua",
 }
 for _,v in pairs(lastdofiles) do
 	dofiles(v)	
