@@ -7,7 +7,7 @@ import (
 )
 func initLuaScript() []string{
 	luaPath := []string{
-		"/lua_script/main.lua",
+		"script/main.lua",
 	}
 	return luaPath
 }
@@ -53,7 +53,7 @@ func main(){
 	initGoLuaModule(L)
 	//加载lua脚本
 	for _, luaPath := range luaPathMap {
-		luafile := fmt.Sprintf("%s%s", pwd,luaPath)
+		luafile := fmt.Sprintf("%s%s%s", pwd,"/",luaPath)
 		if err := L.DoFile(luafile); err != nil {
 			panic(err)
 		}
