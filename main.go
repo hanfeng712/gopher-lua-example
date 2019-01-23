@@ -7,11 +7,23 @@ import (
 )
 func initLuaScript() []string{
 	luaPath := []string{
-		"/lua_script/gxlua/unitimer.lua",
-		"/lua_script/gxlua/RandomReturnAward.lua",
-		"/lua_script/gxlua/init.lua",
+		"/lua_script/gxlua/main.lua",
 	}
 	return luaPath
+}
+
+func dofile(L *lua.LState) int{
+	pwd, err := os.Getwd()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	luaPath := L.ToString(1)
+	luafile := fmt.Sprintf("%s%s%s", pwd,"/",luaPath)
+	if err := L.DoFile(luafile); err != nil {
+			panic(err)
+	}
+	return 1
 }
 
 func initGoLuaModule(L *lua.LState) int{
@@ -19,6 +31,9 @@ func initGoLuaModule(L *lua.LState) int{
 	L.PreloadModule("gotime", luatool.NewTimeModule().Loader)
 	//加载go提供元表给lua
 	luatool.RegisterPersonType(L)
+	/********add global function*********/
+	//提供全局函数给lua
+	L.SetGlobal("dofiles", L.NewFunction(dofile))
 	return 0
 }
 

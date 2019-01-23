@@ -4,6 +4,7 @@
 package luatool
 
 import (
+	"fmt"	
 	"github.com/yuin/gopher-lua"
 )
 
@@ -21,3 +22,8 @@ func Double(L *lua.LState) int {
 	return 1                     /* number of results */
 }
 
+func TableToMap(L *lua.LState) int{
+	lv := L.ToTable(1)
+	fmt.Println(lv)	
+	return 1
+}
