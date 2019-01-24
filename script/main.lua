@@ -12,3 +12,4 @@ local function init()
 end
 init()
 unilight.debug("lua脚本加载完毕")
+print("time:" .. tostring(os.time) .. ", os.msectime:" .. tostring(os.msectime()) .. ", os.nsectime:" .. tostring(os.nsectime()))

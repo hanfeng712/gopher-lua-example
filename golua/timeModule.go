@@ -4,6 +4,7 @@
 package golua
 
 import (
+	"time"	
 	"github.com/yuin/gopher-lua"
 )
 type timeModule struct {
@@ -21,7 +22,9 @@ func NewTimeModule() *timeModule {
 //模块函数注册
 func (h *timeModule) init() int{
 	h.exports["Test"] = h.test
+	h.exports["luatime"] = h.msec
 	h.exports["Msec"] = h.msec
+	h.exports["Nsec"] = h.msec
 	return 1
 }
 
@@ -38,11 +41,24 @@ func (h *timeModule) test(L *lua.LState) int {
 	L.Push(ret)
 	return 1
 }
-
+//获取当前秒
+func (h *timeModule) second(L *lua.LState) int {
+	second := time.Now().Unix()
+	ret := lua.LNumber(second)
+	L.Push(ret)
+	return 1
+}
+//获取当前毫秒
 func (h *timeModule) msec(L *lua.LState) int {
-	msec := 1
+	msec := time.Now().UnixNano() / 1e6
 	ret := lua.LNumber(msec)
 	L.Push(ret)
 	return 1
 }
-
+//获取当前纳秒秒
+func (h *timeModule) nsec(L *lua.LState) int {
+	msec := time.Now().UnixNano() / 1e9
+	ret := lua.LNumber(msec)
+	L.Push(ret)
+	return 1
+}

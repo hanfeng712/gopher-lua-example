@@ -1,21 +1,25 @@
 local gologging = require("gologging")
+local gotime = require("gotime")
 
 unilight = unilight or {}
+os.time = gotime.luatime()
+os.msectime = gotime.Msec
+os.nsectime = gotime.Nsec
 
 -- log --
 unilight.debug = function(...)
-	local arg = {...}	
+	local arg = {...}
 	gologging.debug(arg[1], arg[2] or {})
 end
 
 unilight.info = function(...)
-	local arg = {...}	
+	local arg = {...}
 	gologging.info(arg[1], arg[2] or {})
 end
 
 unilight.warn = function(...)
 	print("unilight-warn:" .. tostring(...))
-	local arg = {...}	
+	local arg = {...}
 	gologging.warning(arg[1], arg[2] or {})
 end
 
@@ -28,6 +32,6 @@ unilight.error = function(...)
 end
 
 unilight.stack = function(...)
-	local arg = {...}	
+	local arg = {...}
 	print("unilight-stack:" .. tostring(...))
 end
