@@ -4,7 +4,7 @@
 package golua
 
 import (
-	"time"	
+	"time"
 	"github.com/yuin/gopher-lua"
 )
 type timeModule struct {
