@@ -1,19 +1,21 @@
+local gologging = require("gologging")
+
 unilight = unilight or {}
 
 -- log --
 unilight.debug = function(...)
 	print("unilight-debug:" .. tostring(...))
-	--go.logging.Debug(...)
+	--gologging.debug(...)
 end
 
 unilight.info = function(...)
 	print("unilight-info:" .. tostring(...))
-	--go.logging.Info(...)
+	--gologging.info(...)
 end
 
 unilight.warn = function(...)
 	print("unilight-warn:" .. tostring(...))
-	--go logging.Warning(...)
+	--gologging.warning(...)
 end
 
 unilight.error = function(...)
@@ -21,7 +23,7 @@ unilight.error = function(...)
 	if next(arg) == nil then
 		unilight.error(debug.traceback())
 	end
-	--go.logging.Error(...)
+	--gologging.error(...)
 	print("unilight-error:" .. tostring(...))
 end
 

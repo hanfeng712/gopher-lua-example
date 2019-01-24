@@ -1,4 +1,6 @@
 print("*************lua-开始写代码=入口位置-lua******************")
+local gologging = require("gologging")
+
 local function init()
 	local lastdofiles = {
 		"script/gxlua/init.lua",
@@ -17,3 +19,6 @@ print("tick1:" .. tostring(tick1))
 local timer2 = NewUniTimerClass(nil, 20)
 local tick2 = timer2:GetId()
 print("tick2:" .. tostring(tick2))
+
+gologging.info("I like fruit!", {name="seth", age=1000, male=true, engineer=true})
+
