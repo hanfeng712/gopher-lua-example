@@ -4,18 +4,19 @@ unilight = unilight or {}
 
 -- log --
 unilight.debug = function(...)
-	print("unilight-debug:" .. tostring(...))
-	--gologging.debug(...)
+	local arg = {...}	
+	gologging.debug(arg[1], arg[2] or {})
 end
 
 unilight.info = function(...)
-	print("unilight-info:" .. tostring(...))
-	--gologging.info(...)
+	local arg = {...}	
+	gologging.info(arg[1], arg[2] or {})
 end
 
 unilight.warn = function(...)
 	print("unilight-warn:" .. tostring(...))
-	--gologging.warning(...)
+	local arg = {...}	
+	gologging.warning(arg[1], arg[2] or {})
 end
 
 unilight.error = function(...)
@@ -23,10 +24,10 @@ unilight.error = function(...)
 	if next(arg) == nil then
 		unilight.error(debug.traceback())
 	end
-	--gologging.error(...)
-	print("unilight-error:" .. tostring(...))
+	gologging.error(arg[1], arg[2] or {})
 end
 
 unilight.stack = function(...)
+	local arg = {...}	
 	print("unilight-stack:" .. tostring(...))
 end

@@ -38,7 +38,8 @@ func initGoLuaModule(L *lua.LState) int{
 	golua.RegisterPersonType(L)
 	/*log*/
 	zlogger := zerolog.New(os.Stdout)
-	logger := loguago.NewLogger(zlogger.With().Str("unit", "my-lua-module").Logger())
+	//logger := loguago.NewLogger(zlogger.With().Str("unit", "my-lua-module").Logger())
+	logger := loguago.NewLogger(zlogger.With().Str("auth:","hf").Logger())
 	L.PreloadModule("gologging", logger.Loader)
 	return 0
 }

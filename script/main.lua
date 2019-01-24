@@ -11,14 +11,4 @@ local function init()
 	end
 end
 init()
-unitimer.init(110)
-print("unitimer.tickmsec:" .. tostring(unitimer.tickmsec))
-local timer1 = NewUniTimerClass(nil, 10)
-local tick1 = timer1:GetId()
-print("tick1:" .. tostring(tick1))
-local timer2 = NewUniTimerClass(nil, 20)
-local tick2 = timer2:GetId()
-print("tick2:" .. tostring(tick2))
-
-gologging.info("I like fruit!", {name="seth", age=1000, male=true, engineer=true})
-
+unilight.debug("lua脚本加载完毕")
