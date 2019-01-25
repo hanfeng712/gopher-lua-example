@@ -9,6 +9,7 @@ import (
 )
 func initLuaScript() []string{
 	luaPath := []string{
+		"script/gopack.lua",
 		"script/main.lua",
 	}
 	return luaPath

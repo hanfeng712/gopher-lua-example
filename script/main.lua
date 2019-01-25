@@ -1,6 +1,4 @@
 print("*************lua-开始写代码=入口位置-lua******************")
-local gologging = require("gologging")
-
 local function init()
 	local lastdofiles = {
 		"script/gxlua/init.lua",
