@@ -6,6 +6,7 @@ https://github.com/rucuriousyet/loguago.git
 https://github.com/rs/zerolog.git
 https://github.com/yuin/gluamapper.git
 https://github.com/mitchellh/mapstructure.git
+https://github.com/hanfeng712/gopher-lua-json.git
 目录介绍:
 script	lua脚本目录
 golua	go提供库目录

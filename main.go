@@ -6,6 +6,7 @@ import (
 	"github.com/yuin/gopher-lua"
 	"github.com/rs/zerolog"
 	"github.com/rucuriousyet/loguago"
+	"github.com/gopher-lua-json"
 )
 func initLuaScript() []string{
 	luaPath := []string{
@@ -31,17 +32,19 @@ func dofile(L *lua.LState) int{
 
 func initGoLuaModule(L *lua.LState) int{
 	/********add global function*********/
-	//提供全局函数给lua
+	/*提供全局函数给lua*/
 	L.SetGlobal("dofiles", L.NewFunction(dofile))
-	//加载go提供对象给lua
+	/*加载go提供对象给lua*/
 	L.PreloadModule("gotime", golua.NewTimeModule().Loader)
-	//加载go提供元表给lua
+	/*加载go提供元表给lua*/
 	golua.RegisterPersonType(L)
 	/*log*/
 	zlogger := zerolog.New(os.Stdout)
 	//logger := loguago.NewLogger(zlogger.With().Str("unit", "my-lua-module").Logger())
 	logger := loguago.NewLogger(zlogger.With().Str("auth:","hf").Logger())
 	L.PreloadModule("gologging", logger.Loader)
+	/*json*/
+	L.PreloadModule("json",json.Loader)
 	return 0
 }
 
