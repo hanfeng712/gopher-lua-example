@@ -30,6 +30,30 @@ func dofile(L *lua.LState) int{
 	return 1
 }
 
+func listFile(myfolder string) []string{
+	var ret []string	
+	files, _ := ioutil.ReadDir(myfolder)
+	for _, file := range files {
+		if file.IsDir() {
+			listFile(myfolder + "/" + file.Name())
+		} else {
+			var filenameWithSuffix string = path.Base(file.Name()) //获取文件名带后缀
+			var fileSuffix string = path.Ext(filenameWithSuffix) //获取文件后缀
+			if fileSuffix == ".lua"{
+				fmt.Println(myfolder + "/" + file.Name())
+				filePath := fmt.Sprintf("%s%s%s", myfolder,"/",file.Name())	
+				append(filePath)
+			}
+		}
+	}
+}
+
+func getLuaFiles(L *lua.LState) int{
+	luaPath := L.ToString(1)
+
+	return 1
+}
+
 func initGoLuaModule(L *lua.LState) int{
 	/********add global function*********/
 	/*提供全局函数给lua*/
