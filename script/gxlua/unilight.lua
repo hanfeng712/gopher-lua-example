@@ -32,3 +32,11 @@ unilight.stack = function(...)
 	local arg = {...}
 	print("unilight-stack:" .. tostring(...))
 end
+
+unilight.tablefiles = function()
+	return luar.slice2table(go.getLuaFiles(go.tablePath))
+end
+
+unilight.scriptfiles = function()
+	return luar.slice2table(go.getLuaFiles(go.scriptPath))
+end
