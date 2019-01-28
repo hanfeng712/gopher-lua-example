@@ -1,6 +1,8 @@
 package main
 import (
 	"fmt"
+	"io/ioutil"
+	"path"
 	"os"
 	"./golua"
 	"github.com/yuin/gopher-lua"
@@ -30,27 +32,41 @@ func dofile(L *lua.LState) int{
 	return 1
 }
 
-func listFile(myfolder string) []string{
-	var ret []string	
+func listFile(myfolder string, res []string, index int32){
 	files, _ := ioutil.ReadDir(myfolder)
 	for _, file := range files {
 		if file.IsDir() {
-			listFile(myfolder + "/" + file.Name())
+			listFile(myfolder + "/" + file.Name(), res, index)
 		} else {
 			var filenameWithSuffix string = path.Base(file.Name()) //获取文件名带后缀
 			var fileSuffix string = path.Ext(filenameWithSuffix) //获取文件后缀
 			if fileSuffix == ".lua"{
-				fmt.Println(myfolder + "/" + file.Name())
-				filePath := fmt.Sprintf("%s%s%s", myfolder,"/",file.Name())	
-				append(filePath)
+				filePath := fmt.Sprintf("%s%s%s", myfolder,"/",file.Name())
+				res[index] = filePath
+				index = index + 1
 			}
 		}
 	}
 }
 
 func getLuaFiles(L *lua.LState) int{
+	pwd, err := os.Getwd()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 	luaPath := L.ToString(1)
-
+	luaPath = fmt.Sprintf("%s%s%s", pwd,"/",luaPath)
+	ret := make([]string,100)
+	listFile(luaPath, ret, 0)
+	for _,v := range ret{
+		if(len(v) > 0){
+			fmt.Println(v)	
+			if err := L.DoFile(v); err != nil{
+				panic(err)
+			}
+		}
+	}
 	return 1
 }
 
@@ -58,6 +74,7 @@ func initGoLuaModule(L *lua.LState) int{
 	/********add global function*********/
 	/*提供全局函数给lua*/
 	L.SetGlobal("dofiles", L.NewFunction(dofile))
+	L.SetGlobal("getLuaFiles", L.NewFunction(getLuaFiles))
 	/*加载go提供对象给lua*/
 	L.PreloadModule("gotime", golua.NewTimeModule().Loader)
 	/*加载go提供元表给lua*/
