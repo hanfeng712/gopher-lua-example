@@ -6,6 +6,7 @@ import (
 	"os"
 	"./golua"
 	"github.com/yuin/gopher-lua"
+	"github.com/vadv/gopher-lua-libs"
 	"github.com/rs/zerolog"
 	"github.com/rucuriousyet/loguago"
 	"github.com/gopher-lua-json"
@@ -61,7 +62,7 @@ func getLuaFiles(L *lua.LState) int{
 	listFile(luaPath, ret, 0)
 	for _,v := range ret{
 		if(len(v) > 0){
-			fmt.Println(v)	
+			fmt.Println(v)
 			if err := L.DoFile(v); err != nil{
 				panic(err)
 			}
@@ -77,6 +78,9 @@ func initGoLuaModule(L *lua.LState) int{
 	L.SetGlobal("getLuaFiles", L.NewFunction(getLuaFiles))
 	/*加载go提供对象给lua*/
 	L.PreloadModule("gotime", golua.NewTimeModule().Loader)
+	//gluaxmlpath.Preload(L)
+	libs.Preload(L)
+	//xmlpath.Preload(L)
 	/*加载go提供元表给lua*/
 	golua.RegisterPersonType(L)
 	/*log*/
