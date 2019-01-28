@@ -9,6 +9,12 @@ https://github.com/mitchellh/mapstructure.git
 https://github.com/hanfeng712/gopher-lua-json.git
 https://github.com/hanfeng712/table.git
 https://github.com/vadv/gopher-lua-libs.git
+go get github.com/cbroglie/mustache
+go get github.com/dustin/go-humanize
+go get github.com/go-sql-driver/mysql
+go get github.com/lib/pq
+go get github.com/technoweenie/multipartstreamer
+go get gopkg.in/yaml.v2
 目录介绍:
 script	lua脚本目录
 golua	go提供库目录
