@@ -8,7 +8,7 @@ https://github.com/yuin/gluamapper.git
 https://github.com/mitchellh/mapstructure.git
 https://github.com/hanfeng712/gopher-lua-json.git
 https://github.com/hanfeng712/table.git
-https://github.com/vadv/gopher-lua-libs.git
+https://github.com/hanfeng712/gopher-lua-libs.git
 go get github.com/cbroglie/mustache
 go get github.com/dustin/go-humanize
 go get github.com/go-sql-driver/mysql
