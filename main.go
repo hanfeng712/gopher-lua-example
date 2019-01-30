@@ -6,6 +6,7 @@ import (
 	"os"
 	"./golua"
 	"github.com/yuin/gopher-lua"
+	"github.com/yuin/gopher-lua/parse"
 	"github.com/vadv/gopher-lua-libs"
 	"github.com/rs/zerolog"
 	"github.com/rucuriousyet/loguago"
@@ -50,6 +51,29 @@ func listFile(myfolder string, res []string, index int32){
 	}
 }
 
+func testScriptCompile(L *lua.LState, script string) {
+	file, err := os.Open(script)
+	if err != nil {
+		return
+	}
+	chunk, err2 := parse.Parse(file, script)
+	if err2 != nil {
+		return
+	}
+	parse.Dump(chunk)
+	proto, err3 := lua.Compile(chunk, script)
+	if err3 != nil {
+		return
+	}
+	lfunc := L.NewFunctionFromProto(proto)
+	L.Push(lfunc)
+
+	/*
+	nop := func(s string) {}
+	nop(proto.String())
+	*/
+	return
+}
 func getLuaFiles(L *lua.LState) int{
 	pwd, err := os.Getwd()
 	if err != nil {
@@ -66,6 +90,7 @@ func getLuaFiles(L *lua.LState) int{
 			if err := L.DoFile(v); err != nil{
 				panic(err)
 			}
+			//testScriptCompile(L, v)
 		}
 	}
 	return 1
